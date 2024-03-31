@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="YouTube_Downloader_GUI.MainWindow"
+        Title="YouTube Downloader"
+        RequestedThemeVariant="Dark"
+        MinWidth="700"
+        MinHeight="300">
+    
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center" FontSize="25" FontWeight="Black">YouTube Downloader</TextBlock>
+        <TextBox Name="Url" Width="500" Margin="10" HorizontalAlignment="Center" KeyDown="Url_OnKeyDown" Watermark="Enter a YouTube URL"></TextBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <RadioButton Name="RadioButtonVideo" Content="Video" Padding="0, 0, 10, 0" IsChecked="True"/>
+            <RadioButton Name="RadioButtonAudio" Content="Audio"/>
+        </StackPanel>
+        <Button HorizontalAlignment="Center" Click="Button_OnClick">Download</Button>
+        <TextBlock Name="Status" HorizontalAlignment="Center" Padding="0,10,0,0"></TextBlock>
+    </StackPanel>
+</Window>

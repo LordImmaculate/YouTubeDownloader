@@ -1,0 +1,56 @@
+name: .NET
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.x'  # Specify the .NET version you are using
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build --configuration Release
+
+    - name: Publish project
+      run: dotnet publish --configuration Release --output ./publish
+
+    - name: Archive published build
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+
+  release:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./publish.zip
+        asset_name: publish.zip
+        asset_content_type: application/zip
